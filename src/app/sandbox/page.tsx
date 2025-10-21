@@ -30,7 +30,7 @@ export default function Sandbox() {
         { load, reps: reps3, rir },
       ],
     };
-    const rec = recommendNext(session, { lateMeso, fatigueScore: fatigue });
+    const rec = recommendNext(session, { lateMeso: true, fatigueScore: fatigue });
     setOut(rec);
   };
 

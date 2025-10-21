@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1760892698060,
+      "tag": "0000_worthless_chimera",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1760990602490,
+      "tag": "0001_colossal_magik",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1760990770283,
+      "tag": "0002_black_puck",
+      "breakpoints": true
+    }
+  ]
+}
