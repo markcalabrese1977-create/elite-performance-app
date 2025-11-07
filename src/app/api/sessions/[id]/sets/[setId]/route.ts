@@ -38,16 +38,10 @@ export async function POST(
       return NextResponse.json({ ok: false, error: "exerciseId is required" }, { status: 400 });
     }
     if (payload.setIndex == null) payload.setIndex = 1;
-    if (payload.load === undefined) payload.load = null;
-    if (payload.reps === undefined) payload.reps = null;
-    if (payload.rir === undefined) payload.rir = null;
-    if (payload.tempo === undefined) payload.tempo = null;
-    if (payload.notes === undefined) payload.notes = null;
-    if (payload.isTestSet === undefined) payload.isTestSet = false;
 
     const db = getDb();
 
-    // Neon HTTP returns either T[] or { rows: T[] }, so normalize instead of destructuring
+    // Neon HTTP returns either T[] or { rows: T[] }, so normalize:
     const res = await db.insert(sets as any).values(payload).returning();
     const created = Array.isArray(res) ? res[0] : (res as any)?.rows?.[0];
 

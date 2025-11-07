@@ -22,6 +22,20 @@
       "when": 1760990770283,
       "tag": "0002_black_puck",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1761041381341,
+      "tag": "0003_complex_silver_samurai",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1762373954527,
+      "tag": "0004_colorful_the_spike",
+      "breakpoints": true
     }
   ]
 }

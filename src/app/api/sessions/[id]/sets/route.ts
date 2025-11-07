@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/db/client";
 import { sets } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 type Params = { id: string };
 
@@ -33,10 +34,7 @@ export async function POST(
     const payload: any = { sessionId };
     for (const k of allowed) if (k in body) payload[k] = body[k];
 
-    // Minimal required fields
-    if (!payload.exerciseId) {
-      return NextResponse.json({ ok: false, error: "exerciseId is required" }, { status: 400 });
-    }
+    // Basic sanity defaults
     if (payload.setIndex == null) payload.setIndex = 1;
     if (payload.load === undefined) payload.load = null;
     if (payload.reps === undefined) payload.reps = null;
@@ -45,13 +43,16 @@ export async function POST(
     if (payload.notes === undefined) payload.notes = null;
     if (payload.isTestSet === undefined) payload.isTestSet = false;
 
+    // Minimal required fields
+    if (!payload.exerciseId) {
+      return NextResponse.json({ ok: false, error: "exerciseId is required" }, { status: 400 });
+    }
+
     const db = getDb();
-
-    // Neon HTTP returns either T[] or { rows: T[] }, so normalize instead of destructuring
     const res = await db.insert(sets as any).values(payload).returning();
-    const created = Array.isArray(res) ? res[0] : (res as any)?.rows?.[0];
+const created = Array.isArray(res) ? res[0] : (res as any)?.rows?.[0];
 
-    return NextResponse.json({ ok: true, set: created ?? payload }, { status: 201 });
+    return NextResponse.json({ ok: true, set: created }, { status: 201 });
   } catch (e: any) {
     return NextResponse.json(
       { ok: false, error: String(e?.message ?? e) },
