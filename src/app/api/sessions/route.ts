@@ -15,7 +15,7 @@ export async function GET() {
         dayIndex: sessions.dayIndex,
         fatigueScore: sessions.fatigueScore,
         notes: sessions.notes,
-        setsCount: sql<number>`count(${sets.id})`,
+        setsCount: sql<number>`CAST(COUNT(${sets.id}) AS int)`,
       })
       .from(sessions)
       .leftJoin(sets, eq(sets.sessionId, sessions.id))

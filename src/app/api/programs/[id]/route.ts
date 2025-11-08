@@ -1,41 +1,45 @@
-// src/app/api/programs/[id]/route.ts
-import "server-only";
-export const runtime = "nodejs";
-
-import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-
-import { PROGRAM_BY_ID } from "@/programs";
+import { PROGRAMS } from "@/programs";
 import { applyProgram } from "@/programs/builders/applyProgram";
 
-type Params = { id: string };
-
-export async function GET(_req: NextRequest, ctx: { params: Promise<Params> }) {
-  const { id } = await ctx.params;
-  const program = PROGRAM_BY_ID[id];
-  if (!program) {
-    return NextResponse.json({ ok: false, error: `Program not found: ${id}` }, { status: 404 });
-  }
-  return NextResponse.json({ ok: true, program });
+// Helper: support Next 16 where params may be a Promise
+async function getParams(context: any): Promise<{ id?: string }> {
+  const p = context?.params;
+  if (p && typeof p.then === "function") return await p; // params is a Promise
+  return p ?? {};
 }
 
-export async function POST(req: NextRequest, ctx: { params: Promise<Params> }) {
+export async function POST(req: Request, context: any) {
   try {
-    const { id } = await ctx.params;
-    const template = PROGRAM_BY_ID[id];
-    if (!template) {
-      return NextResponse.json({ ok: false, error: `Program not found: ${id}` }, { status: 404 });
+    const body = await req.json();
+    const userId = Number(body?.userId);
+    const startDate = body?.startDate as string | undefined;
+
+    const { id } = await getParams(context);
+    if (!id) {
+      return NextResponse.json(
+        { ok: false, error: "Missing program id in route params" },
+        { status: 400 }
+      );
     }
 
-    const body = (await req.json().catch(() => ({}))) as { userId?: number; startDate?: string };
-    const userId = Number.isFinite(Number(body.userId)) ? Number(body.userId) : 1;
-    const startDate =
-      typeof body.startDate === "string" && body.startDate.trim()
-        ? body.startDate
-        : new Date().toISOString().slice(0, 10);
+    if (!userId || !startDate) {
+      return NextResponse.json(
+        { ok: false, error: "Missing userId or startDate" },
+        { status: 400 }
+      );
+    }
+
+    const template = PROGRAMS.find(p => p.id === id);
+    if (!template) {
+      return NextResponse.json(
+        { ok: false, error: `Program not found: ${id}` },
+        { status: 404 }
+      );
+    }
 
     const result = await applyProgram({ template, userId, startDate });
-    return NextResponse.json({ ok: true, ...result }, { status: 200 });
+    return NextResponse.json(result, { status: 200 });
   } catch (err: any) {
     return NextResponse.json(
       { ok: false, error: err?.message ?? "Failed to apply program", stack: err?.stack },

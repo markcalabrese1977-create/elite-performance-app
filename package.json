@@ -2,6 +2,12 @@
   "name": "elite-performance-app",
   "version": "0.1.0",
   "private": true,
+  "pnpm": {
+    "overrides": {
+      "drizzle-orm": "0.44.7",
+      "drizzle-kit>drizzle-orm": "0.44.7"
+    }
+  },
   "scripts": {
     "dev:next": "next dev -p 3000",
     "dev:studio": "drizzle-kit studio --port=4983",
@@ -9,14 +15,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "seed": "curl -X GET http://localhost:3000/api/exercises/seed",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
     "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
     "db:test": "tsx ./src/db/test.ts",
-        "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "lint:fix": "eslint . --fix",
     "knip": "knip --reporter markdown",
     "tsprune": "ts-prune -p tsconfig.json",
@@ -29,9 +34,11 @@
     "audit:run": "pnpm typecheck && pnpm lint && pnpm knip && pnpm tsprune && pnpm depcheck && pnpm circulars && pnpm orphans && pnpm analyze && pnpm size"
   },
   "size-limit": [
-    { "path": "./.next/static/chunks/*.js", "limit": "170 KB" }
+    {
+      "path": "./.next/static/chunks/*.js",
+      "limit": "170 KB"
+    }
   ],
-  
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.0.2",
@@ -44,7 +51,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
-    "drizzle-orm": "^0.44.6",
+    "drizzle-orm": "0.44.7",
     "lucide-react": "^0.552.0",
     "next": "16.0.1",
     "papaparse": "^5.5.3",
@@ -66,7 +73,7 @@
     "@types/react": "19.2.2",
     "concurrently": "^9.2.1",
     "depcheck": "^1.4.7",
-    "drizzle-kit": "^0.31.5",
+    "drizzle-kit": "^0.31.6",
     "eslint": "9.38.0",
     "eslint-config-next": "15.5.6",
     "eslint-plugin-unused-imports": "^4.3.0",
