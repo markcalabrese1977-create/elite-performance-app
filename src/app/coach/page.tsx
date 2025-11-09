@@ -1,5 +1,5 @@
 // src/app/coach/page.tsx
-import { db } from '@/lib/db';
+import { db } from '../lib/db';
 import { sets, exercises, sessions } from '../drizzle/schema';
 import { sql } from 'drizzle-orm';
 import { subDays, format } from 'date-fns';

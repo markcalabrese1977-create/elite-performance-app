@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '../lib/db';
 import { exercises, exerciseAliases } from '../drizzle/schema';
 import { sql } from 'drizzle-orm';
 

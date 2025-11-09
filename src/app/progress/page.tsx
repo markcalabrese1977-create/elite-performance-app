@@ -1,5 +1,5 @@
 // src/app/progress/page.tsx
-import { db } from '@/lib/db';
+import { db } from '../lib/db';
 import { sets, exercises } from '../drizzle/schema';
 import { desc, sql } from 'drizzle-orm';
 import { subDays } from 'date-fns';

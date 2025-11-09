@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '../lib/db';
 import { sets, sessions } from '../drizzle/schema';
 
 export async function POST(request: Request) {

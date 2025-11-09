@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '../lib/db';
 import { NextRequest } from 'next/server';
 
 export const GET = async () => new Response('OK');
