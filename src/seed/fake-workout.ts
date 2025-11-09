@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { sets, sessions } from '@/drizzle/schema';
+import { sets, sessions } from '../drizzle/schema';
 
 async function seedFakeWorkout() {
   const [session] = await db

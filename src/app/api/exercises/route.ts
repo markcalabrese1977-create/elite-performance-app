@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { exercises, exerciseAliases } from '@/drizzle/schema';
+import { exercises, exerciseAliases } from '../drizzle/schema';
 import { sql } from 'drizzle-orm';
 
 export async function GET() {

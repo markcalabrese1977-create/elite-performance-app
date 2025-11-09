@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { sets, sessions } from '@/drizzle/schema';
+import { sets, sessions } from '../drizzle/schema';
 
 export async function POST(request: Request) {
   const { workout } = await request.json();

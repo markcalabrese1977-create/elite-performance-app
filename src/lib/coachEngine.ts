@@ -2,7 +2,7 @@ import { db } from '@/lib/db';
 import {
   exerciseSession,
   rec,
-} from '@/drizzle/schema';
+} from '../drizzle/schema';
 import { and, eq, gte } from 'drizzle-orm';
 import { subDays } from 'date-fns';
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { db } from '@/lib/db';
-import { exerciseSession } from '@/drizzle/schema';
+import { exerciseSession } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 
 interface Session {
