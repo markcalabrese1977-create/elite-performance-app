@@ -1,26 +1,15 @@
+// src/app/api/sessions/seed/route.ts
 import { NextResponse } from "next/server";
-import { getDb } from "@/db/client";
+import { db } from "@/db";
 import { sessions } from "@/db/schema";
 
 export async function POST() {
-  const db = getDb();
-
-  // tweak as you like
-  const seed = [
-    { userId: 1, date: new Date(), dayIndex: 1, fatigueScore: 3, notes: "Leg day" },
-    { userId: 1, date: new Date(Date.now() - 86400_000), dayIndex: 2, fatigueScore: 5, notes: "Bench + accessories" },
-    { userId: 1, date: new Date(Date.now() - 2 * 86400_000), dayIndex: 3, fatigueScore: 2, notes: "Pull + arms" },
+  const today = new Date();
+  const seedData = [
+    { userId: 1, date: today, notes: "Seeded session" },
   ];
 
-  await db
-    .insert(sessions)
-    .values(seed as any)
-    // ok to ignore duplicates on reruns for now
-    .catch(() => {});
+  const result = await db.insert(sessions).values(seedData).returning();
 
-  const rows = await db.select().from(sessions);
-  return NextResponse.json({ ok: true, count: rows.length, sessions: rows });
+  return NextResponse.json({ ok: true, sessions: result });
 }
-
-// convenience so you can hit it in the browser too
-export const GET = POST;

@@ -1,34 +1,17 @@
+// src/app/api/metrics/summary/route.ts
 import { NextResponse } from "next/server";
-import { getDb } from "@/db/client";
-import { sessions, sets } from "@/db/schema";
+import { db } from "@/db";
+import { sets } from "@/db/schema";
 import { sql } from "drizzle-orm";
 
 export async function GET() {
-  const db = getDb();
-  try {
-    const [{ count: sessionCount }] = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(sessions);
+  const totalVolume = await db
+    .select({
+      volume: sql<number>`${sets.load} * ${sets.reps}`,
+    })
+    .from(sets);
 
-    const [{ count: setCount }] = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(sets);
+  const total = totalVolume.reduce((sum, row) => sum + (row.volume ?? 0), 0);
 
-    // Your schema exposes `sessions.date`, so use that for "last session"
-    const [{ last }] = await db
-      .select({ last: sql<Date | null>`max(${sessions.date})` })
-      .from(sessions);
-
-    return NextResponse.json({
-      ok: true,
-      sessions: { count: Number(sessionCount ?? 0) },
-      sets: { count: Number(setCount ?? 0) },
-      lastSessionAt: last ? new Date(last) : null,
-    });
-  } catch (e: any) {
-    return NextResponse.json(
-      { ok: false, error: String(e?.message ?? e) },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({ totalVolume: total });
 }

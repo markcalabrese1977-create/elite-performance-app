@@ -9,6 +9,7 @@
     }
   },
   "scripts": {
+    "seed:exercises": "tsx --env-file=.env.local src/seed/seed-exercises.ts",
     "dev:next": "next dev -p 3000",
     "dev:studio": "drizzle-kit studio --port=4983",
     "dev:kill": "kill -9 $(lsof -t -i :3000 -i :4983) || true",
@@ -19,7 +20,7 @@
     "seed": "curl -X GET http://localhost:3000/api/exercises/seed",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
-    "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
+    "db:studio": "DATABASE_URL=postgresql://localhost/elite_performance npx drizzle-kit studio --port 0",
     "db:test": "tsx ./src/db/test.ts",
     "typecheck": "tsc --noEmit",
     "lint:fix": "eslint . --fix",
@@ -30,6 +31,7 @@
     "orphans": "madge --orphans --extensions ts,tsx src",
     "graph": "madge --image graph.svg --extensions ts,tsx src",
     "analyze": "ANALYZE=true next build --webpack",
+    "push": "drizzle-kit push",
     "size": "size-limit",
     "audit:run": "pnpm typecheck && pnpm lint && pnpm knip && pnpm tsprune && pnpm depcheck && pnpm circulars && pnpm orphans && pnpm analyze && pnpm size"
   },
@@ -47,6 +49,7 @@
     "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.3",
+    "@tanstack/react-query": "^5.90.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -54,8 +57,9 @@
     "drizzle-orm": "0.44.7",
     "lucide-react": "^0.552.0",
     "next": "16.0.1",
+    "next-runtime-env": "^3.3.0",
     "papaparse": "^5.5.3",
-    "postgres": "^3.4.3",
+    "postgres": "^3.4.7",
     "react": "19.2.0",
     "react-day-picker": "^9.11.1",
     "react-dom": "19.2.0",
@@ -82,7 +86,9 @@
     "size-limit": "^11.2.0",
     "tailwindcss": "^4.1.15",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
     "ts-prune": "^0.10.3",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.6",
     "typescript": "5.9.3",
     "unimported": "^1.31.1"

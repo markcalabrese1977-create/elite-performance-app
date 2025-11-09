@@ -1,53 +1,45 @@
 // src/lib/exerciseResolver.ts
-import { getDb } from "@/db/client";
+import { db } from "@/db";
 import { exercises, exerciseAliases } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { toSlug } from "./utils";
 
-type ExerciseRow = typeof exercises.$inferSelect;
-
-/**
- * Resolve an exercise by human-facing name.
- * Order of checks:
- * 1) Exact name match
- * 2) Slug match (normalized)
- * 3) Alias match (alias is stored as slug) -> get exerciseId
- */
-export async function resolveExerciseByName(name: string): Promise<ExerciseRow | null> {
-  const db = getDb();
+export async function resolveExerciseByName(name: string) {
   const slug = toSlug(name);
 
-  // 1) Exact name
-  {
-    const rows = await db.select().from(exercises).where(eq(exercises.name, name)).limit(1);
-    if (rows.length) return rows[0];
-  }
+  // 1. Exact name
+  const exact = await db
+    .select()
+    .from(exercises)
+    .where(eq(exercises.name, name))
+    .limit(1);
 
-  // 2) Slug match
-  {
-    const rows = await db.select().from(exercises).where(eq(exercises.slug, slug)).limit(1);
-    if (rows.length) return rows[0];
-  }
+  if (exact[0]) return exact[0];
 
-  // 3) Alias -> exerciseId, then load exercise
-  {
-    const alias = await db
-      .select({ exerciseId: exerciseAliases.exerciseId })
-      .from(exerciseAliases)
-      .where(eq(exerciseAliases.alias, slug))
+  // 2. Slug match
+  const bySlug = await db
+    .select()
+    .from(exercises)
+    .where(eq(exercises.slug, slug))
+    .limit(1);
+
+  if (bySlug[0]) return bySlug[0];
+
+  // 3. Alias match
+  const alias = await db
+    .select({ exerciseId: exerciseAliases.exerciseId })
+    .from(exerciseAliases)
+    .where(eq(exerciseAliases.alias, slug))
+    .limit(1);
+
+  if (alias[0]) {
+    const exercise = await db
+      .select()
+      .from(exercises)
+      .where(eq(exercises.id, alias[0].exerciseId))
       .limit(1);
-
-    if (alias.length) {
-      const rows = await db.select().from(exercises).where(eq(exercises.id, alias[0].exerciseId)).limit(1);
-      if (rows.length) return rows[0];
-    }
+    return exercise[0] || null;
   }
 
   return null;
-}
-
-/** Convenience: just the ID (or null if not found). */
-export async function resolveExerciseIdByName(name: string): Promise<number | null> {
-  const row = await resolveExerciseByName(name);
-  return row ? row.id : null;
 }

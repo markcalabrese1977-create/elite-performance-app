@@ -1,5 +1,5 @@
 // src/db/schema.ts
-import { pgTable, serial, text, integer, boolean, timestamp, index } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, boolean, timestamp, index, jsonb } from "drizzle-orm/pg-core";
 
 // --- Exercises --------------------------------------------------------------
 export const exercises = pgTable("exercises", {
@@ -68,3 +68,22 @@ export const sets = pgTable(
     idxExercise: index("idx_sets_exercise").on(t.exerciseId),
   })
 );
+// ... your existing tables (exercises, sessions, sets, etc.)
+
+
+
+export const userSettings = pgTable("user_settings", {
+  userId: integer("user_id").primaryKey(),
+  goal: text("goal").notNull().default("hypertrophy"),
+  experience: text("experience").notNull().default("beginner"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// At the bottom of src/db/schema.ts
+export const healthRaw = pgTable("health_raw", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  source: text("source").notNull(),
+  payload: jsonb("payload").notNull(),
+  capturedAt: timestamp("captured_at").defaultNow(),
+});

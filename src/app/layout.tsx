@@ -1,20 +1,29 @@
 // src/app/layout.tsx
-import "./globals.css";
-import type { ReactNode } from "react";
-import { Toaster } from "sonner";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { Nav } from '@/components/Nav';
+import QueryProvider from '@/components/QueryProvider';
 
-export const metadata = {
-  title: "Elite Performance App",
-  description: "Train. Track. Progress.",
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'Elite Performance',
+  description: 'Your AI-powered gym log',
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="min-h-dvh bg-slate-50 text-slate-900 antialiased">
-        {children}
-        {/* Notifications */}
-        <Toaster richColors position="top-right" />
+      <body className={inter.className}>
+        <QueryProvider>
+          <Nav />
+          <main className="min-h-screen">{children}</main>
+        </QueryProvider>
       </body>
     </html>
   );
