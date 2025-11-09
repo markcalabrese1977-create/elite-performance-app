@@ -1,7 +1,7 @@
 // src/app/api/sessions/[id]/sets/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { sets } from "@/db/schema";
+import { db } from "../drizzle/db";
+import { sets } from "../drizzle/db/schema";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   try {

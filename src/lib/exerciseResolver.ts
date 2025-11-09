@@ -1,6 +1,6 @@
 // src/lib/exerciseResolver.ts
-import { db } from "@/db";
-import { exercises, exerciseAliases } from "@/db/schema";
+import { db } from "../drizzle/db";
+import { exercises, exerciseAliases } from "../drizzle/db/schema";
 import { eq } from "drizzle-orm";
 import { toSlug } from "./utils";
 

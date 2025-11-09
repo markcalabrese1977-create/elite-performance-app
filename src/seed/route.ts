@@ -1,7 +1,7 @@
 // src/seed/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { exercises } from "@/db/schema";
+import { db } from "../drizzle/db";
+import { exercises } from "../drizzle/db/schema";
 
 export async function POST() {
   const seedData = [

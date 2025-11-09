@@ -1,7 +1,7 @@
 // src/app/api/health/import/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { healthRaw } from "@/db/schema";
+import { db } from "../drizzle/db";
+import { healthRaw } from "../drizzle/db/schema";
 
 export async function POST(req: Request) {
   try {

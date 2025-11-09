@@ -1,7 +1,7 @@
 // src/app/api/metrics/summary/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { sets } from "@/db/schema";
+import { db } from "../drizzle/db";
+import { sets } from "../drizzle/db/schema";
 import { sql } from "drizzle-orm";
 
 export async function GET() {

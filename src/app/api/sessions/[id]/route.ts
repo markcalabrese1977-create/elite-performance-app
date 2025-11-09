@@ -2,7 +2,7 @@
 // GET /api/sessions/:id → returns one session and its sets (with exercise info)
 
 import { NextResponse } from "next/server";
-import { db } from "@/db";
+import { db } from "../drizzle/db";
 import { sql } from "drizzle-orm";
 
 type Ctx = { params?: { id?: string | string[] } | Promise<{ id?: string | string[] }> };

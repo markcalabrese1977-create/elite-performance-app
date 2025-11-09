@@ -5,9 +5,9 @@
 // - Avoids transactions and RETURNING (Neon HTTP quirks)
 
 import { NextResponse } from "next/server";
-import { db } from "@/db";
+import { db } from "../drizzle/db";
 import { sql, inArray } from "drizzle-orm";
-import { exercises } from "@/db/schema";
+import { exercises } from "../drizzle/db/schema";
 
 type Row = { id: number; slug: string };
 

@@ -1,7 +1,7 @@
 // src/app/api/sessions/seed/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { sessions } from "@/db/schema";
+import { db } from "../drizzle/db";
+import { sessions } from "../drizzle/db/schema";
 
 export async function POST() {
   const today = new Date();

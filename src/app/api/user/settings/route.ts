@@ -1,7 +1,7 @@
 // src/app/api/user/settings/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { userSettings } from "@/db/schema";
+import { db } from "../drizzle/db";
+import { userSettings } from "../drizzle/db/schema";
 import { eq } from "drizzle-orm";
 
 const USER_ID = 1;

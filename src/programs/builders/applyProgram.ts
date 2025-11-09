@@ -2,9 +2,9 @@
 // Applies a ProgramTemplate: creates sessions + sets.
 // Robust to schema drift: detects set_index vs "index", optional tempo/notes, and casts text.
 
-import { db } from "@/db";
+import { db } from "../drizzle/db";
 import { sql, inArray } from "drizzle-orm";
-import { exercises } from "@/db/schema";
+import { exercises } from "../drizzle/db/schema";
 import type {
   ProgramTemplate,
   ProgramWeek,
